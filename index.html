@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Club Check Holy-Moly</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #guestDisplay {
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #222;
+        border-radius: 5px;
+}
+
+    </style>
+</head>
+<body>
+    
+    <p><span id="guestDisplay">0</span></p>
+
+    <h1>🎉 Welcome in the Club Holy Moly 🎉</h1>
+    <h1> Club Entrance </h1> 
+
+    <div>
+        <input type="text" id="name" placeholder="Your name">
+        <br>
+        <input type="number" id="age" placeholder="Your age">
+        <br>
+        <button onclick="checkAge()">Check Entry</button>
+    </div>
+
+    <div id="cashSection" style="display:none;">
+        <br>
+        <input type="number" id="cash" placeholder="Cash in CHF">
+        <br>
+        <button id="cashButton" onclick="checkCash()">Check cash</button>
+
+    </div>
+
+    <div id="output"></div>
+    <br>
+    <button onclick="resetForm()">👤 Next guest</button>
+    <p>💰 Total revenue: <span id="revenue">0</span> $</p>
+    <button onclick="resetAll()">Reset ALL</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

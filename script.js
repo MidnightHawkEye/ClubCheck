@@ -2,6 +2,19 @@ let guestCount = Number(localStorage.getItem("guestCount")) || 0;
 const MAX_GUESTS = 3;
 let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
+const music = document.getElementById("bgMusic");
+music.volume = 0.3;
+guestCount >= MAX_GUESTS
+
+function updateClubStatus() {
+  const status = document.getElementById("clubStatus");
+
+  if (guestCount >= MAX_GUESTS) {
+    status.innerText = "🚫 CLUB IS FULL";
+  } else {
+    status.innerText = "🟢 Club Open";
+  }
+}
 
 document.getElementById("revenue").innerText = totalRevenue;
 
@@ -73,6 +86,7 @@ function checkCash() {
     localStorage.setItem("guestCount", guestCount);
     updateGuestDisplay();
     output.innerText += `\n👥 Total guests inside: ${guestCount}`;
+    updateClubStatus();
 
     
 
@@ -129,7 +143,25 @@ function resetAll() {
   document.getElementById("name").value = "";
   document.getElementById("age").value = "";
   document.getElementById("cash").value = "";
+
+  updateClubStatus();
+}
+
+function updateClubStatus() {
+  const status = document.getElementById("clubStatus");
+  const light = document.getElementById("warningLight");
+
+  if (guestCount >= MAX_GUESTS) {
+    status.innerText = "🚫 CLUB IS FULL";
+    light.style.display = "block";
+    light.classList.add("blinking");
+  } else {
+    status.innerText = "🟢 Club Open";
+    light.style.display = "none";
+    light.classList.remove("blinking");
+  }
 }
 
 
 updateGuestDisplay();
+updateClubStatus();

@@ -2,8 +2,6 @@ let guestCount = Number(localStorage.getItem("guestCount")) || 0;
 const MAX_GUESTS = 3;
 let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
-const music = document.getElementById("bgMusic");
-music.volume = 0.3;
 guestCount >= MAX_GUESTS
 
 function updateClubStatus() {

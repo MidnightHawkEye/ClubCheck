@@ -4,6 +4,7 @@ let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
 guestCount >= MAX_GUESTS
 
+
 function updateClubStatus() {
   const status = document.getElementById("clubStatus");
 
@@ -85,6 +86,7 @@ function checkCash() {
     updateGuestDisplay();
     output.innerText += `\n👥 Total guests inside: ${guestCount}`;
     updateClubStatus();
+    updateLeaveButton();
 
     
 
@@ -142,7 +144,26 @@ function resetAll() {
   document.getElementById("age").value = "";
   document.getElementById("cash").value = "";
 
+  document.getElementById("cashButton").disabled = false;
+  document.getElementById("cashSection").style.display = "none";
+
   updateClubStatus();
+  updateLeaveButton();
+}
+
+function guestLeavesClub() {
+  if (guestCount <= 0) {
+    return; 
+  }
+
+  guestCount--;
+  localStorage.setItem("guestCount", guestCount);
+  document.getElementById("guestDisplay").innerText = guestCount
+  document.getElementById("output").innerText = "👋 A guest has left the club.";
+
+
+  updateClubStatus();
+  updateLeaveButton();
 }
 
 function updateClubStatus() {
@@ -160,6 +181,15 @@ function updateClubStatus() {
   }
 }
 
+function updateLeaveButton() {
+  const leaveBtn = document.getElementById("leaveButton");
+
+  if (!leaveBtn) return;
+
+  leaveBtn.disabled = guestCount === 0;
+}
+
 
 updateGuestDisplay();
 updateClubStatus();
+updateLeaveButton();

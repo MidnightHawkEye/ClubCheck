@@ -1,5 +1,5 @@
 let guestCount = Number(localStorage.getItem("guestCount")) || 0;
-const MAX_GUESTS = 1;
+const MAX_GUESTS = 5;
 let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
 guestCount >= MAX_GUESTS
@@ -34,11 +34,19 @@ function checkAge() {
     let isAllowed = false;
 
     if (guestCount >= MAX_GUESTS) {
+        
+      if (waitingList.includes(name)) {
+          document.getElementById("output").innerText =
+          `${name} is already on the waiting list.`;
+        return;
+      }
+      
         waitingList.push(name);
         updateWaitingList();
 
         document.getElementById("output").innerText =
         `🚫 Club is full. ${name} added to waiting list.`;
+        document.getElementById("entryButton").disabled = true;
         return;
     }
 
@@ -140,15 +148,12 @@ function resetForm() {
     document.getElementById("name").value = "";
     document.getElementById("age").value = "";
     document.getElementById("cash").value = "";
-
-    // Clear output text
     document.getElementById("output").innerText = "";
 
-    // Hide cash section again
     document.getElementById("cashSection").style.display = "none";
 
     document.getElementById("cashButton").disabled = false;
-    
+    document.getElementById("entryButton").disabled = false;
     isAllowed = false;
 }
 

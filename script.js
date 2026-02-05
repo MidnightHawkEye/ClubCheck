@@ -1,8 +1,13 @@
 let guestCount = Number(localStorage.getItem("guestCount")) || 0;
-const MAX_GUESTS = 3;
+const MAX_GUESTS = 1;
 let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
 guestCount >= MAX_GUESTS
+const OPEN_HOUR = 4;
+const CLOSE_HOUR = 13;
+let waitingList = JSON.parse(localStorage.getItem("waitingList")) || [];
+
+
 
 
 function updateClubStatus() {
@@ -28,6 +33,21 @@ function checkAge() {
     const output = document.getElementById("output");
     let isAllowed = false;
 
+    if (guestCount >= MAX_GUESTS) {
+        waitingList.push(name);
+        updateWaitingList();
+
+        document.getElementById("output").innerText =
+        `🚫 Club is full. ${name} added to waiting list.`;
+        return;
+    }
+
+
+    if (!isClubOpen()) {
+        document.getElementById("output").innerText =
+        "⏰ Club is closed. Entry allowed from 21:00 to 03:00.";
+        return;
+    }
 
     if (guestCount >= MAX_GUESTS) {
         output.innerText = "🚫 Club is full. Please wait.";
@@ -136,6 +156,9 @@ function resetAll() {
   guestCount = 0;
   totalRevenue = 0;
 
+  localStorage.setItem("guestCount", 0);
+  localStorage.setItem("totalRevenue", 0);
+
   document.getElementById("guestDisplay").innerText = guestCount;
   document.getElementById("revenue").innerText = totalRevenue;
   document.getElementById("output").innerText = "";
@@ -156,11 +179,21 @@ function guestLeavesClub() {
     return; 
   }
 
-  guestCount--;
-  localStorage.setItem("guestCount", guestCount);
-  document.getElementById("guestDisplay").innerText = guestCount
-  document.getElementById("output").innerText = "👋 A guest has left the club.";
+   if (waitingList.length > 0) {
+        const nextGuest = waitingList.shift();
+        guestCount++;
 
+        document.getElementById("output").innerText =
+        `✅ ${nextGuest} entered from waiting list.`;
+
+        localStorage.setItem("guestCount", guestCount);
+        updateWaitingList();
+   }
+
+    guestCount--;
+    localStorage.setItem("guestCount", guestCount);
+    document.getElementById("guestDisplay").innerText = guestCount
+    document.getElementById("output").innerText = "👋 A guest has left the club.";
 
   updateClubStatus();
   updateLeaveButton();
@@ -169,6 +202,12 @@ function guestLeavesClub() {
 function updateClubStatus() {
   const status = document.getElementById("clubStatus");
   const light = document.getElementById("warningLight");
+
+  if (!isClubOpen()) {
+    status.innerText = "⏰ Club closed";
+    light.style.display = "none";
+    return;
+  }
 
   if (guestCount >= MAX_GUESTS) {
     status.innerText = "🚫 CLUB IS FULL";
@@ -187,9 +226,33 @@ function updateLeaveButton() {
   if (!leaveBtn) return;
 
   leaveBtn.disabled = guestCount === 0;
+ 
+}
+
+function isClubOpen() {
+  const now = new Date();
+  const hour = now.getHours();
+
+  return hour >= OPEN_HOUR || hour < CLOSE_HOUR;
+}
+
+function updateWaitingList() {
+  const list = document.getElementById("waitingList");
+  list.innerHTML = "";
+
+  waitingList.forEach(name => {
+    const li = document.createElement("li");
+    li.innerText = name;
+    list.appendChild(li);
+  });
+
+  localStorage.setItem("waitingList", JSON.stringify(waitingList));
 }
 
 
 updateGuestDisplay();
 updateClubStatus();
 updateLeaveButton();
+updateClubStatus();
+updateWaitingList();
+

@@ -1,11 +1,11 @@
 let guestCount = Number(localStorage.getItem("guestCount")) || 0;
-const MAX_GUESTS = 5;
+const MAX_GUESTS = 2;
 let totalRevenue = Number(localStorage.getItem("totalRevenue")) || 0;
 const ticketPrice = 20;
 guestCount >= MAX_GUESTS
 const OPEN_HOUR = 4;
 const CLOSE_HOUR = 13;
-let waitingList = JSON.parse(localStorage.getItem("waitingList")) || [];
+
 
 
 
@@ -97,13 +97,13 @@ function checkCash() {
         return;
     }
 
-    // Check if user can afford entry
+    
     if (cashInput < ENTRY_FEE) {
         output.innerText += `\n🚫 Entry costs $${ENTRY_FEE}. You don't have enough cash.`;
         return;
     }
 
-    // Subtract entry fee
+    
     const remainingCash = cashInput - ENTRY_FEE;
 
     output.innerText += `\n🎟️ Entry fee: $${ENTRY_FEE} paid.`;
@@ -120,7 +120,7 @@ function checkCash() {
 
 
 
-    // Evaluate remaining cash
+    
     if (remainingCash === 0) {
         output.innerText += "\n😬 No money left for drinks...";
     } else if (remainingCash < 20) {
@@ -199,7 +199,7 @@ function guestLeavesClub() {
     localStorage.setItem("guestCount", guestCount);
     document.getElementById("guestDisplay").innerText = guestCount
     document.getElementById("output").innerText = "👋 A guest has left the club.";
-
+    
   updateClubStatus();
   updateLeaveButton();
 }
